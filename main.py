@@ -31,19 +31,20 @@ if __name__ == '__main__':
         else:
             contact[5] = ""
 
-        #print(f"({FIO_str}: {contact[5]}")
-
-    for i in range(0, len(contacts_list)):
-        for j in range(i, len(contacts_list)):
-            if contacts_list[i][0] == contacts_list[j][0] and contacts_list[i][1] == contacts_list[j][1]:
-                for k in range(2, 6):
-                    if contacts_list[i][k] == '':
-                        contacts_list[i][k] == contacts_list[j][k]
-                        contacts_list[j][k] == ''
-
-    pprint(contacts_list)
+        #Это безобразно, но работает
+        contacts_nums_to_delete_list = []
+        for i in range(0, len(contacts_list)):
+            for j in range(i, len(contacts_list)):
+                if i != j:
+                    print(f'{i}, {j}')
+                    if (contacts_list[i][0] == contacts_list[j][0]) and (contacts_list[i][1] == contacts_list[j][1]):
+                        for k in range(2, len(contacts_list[i])):
+                            if contacts_list[i][k] == '' and contacts_list[j][k] != '':
+                                contacts_list[i][k] = contacts_list[j][k]
+                        contacts_nums_to_delete_list.append(j)
+        for contact_num in contacts_nums_to_delete_list:
+            contacts_list.remove(contacts_list[contact_num])
 
     with open("phonebook.csv", "w") as f:
         datawriter = csv.writer(f, delimiter=',')
-        # Вместо contacts_list подставьте свой список
         datawriter.writerows(contacts_list)
